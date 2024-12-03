@@ -1,0 +1,14 @@
+{
+  "name": "fu",
+  "contributes": {
+    "languages": [{
+      "id": "fu",
+      "extensions": [".fu"]
+    }],
+    "grammars": [{
+      "language": "fu",
+      "scopeName": "source.fu",
+      "path": "fu.tmLanguage.json"
+    }]
+  }
+}

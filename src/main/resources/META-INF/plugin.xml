@@ -1,0 +1,46 @@
+<idea-plugin>
+    <id>fu</id>
+    <name>Fu Language Support</name>
+    <vendor url="fu">fu</vendor>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.ultimate</depends>
+    <depends>org.jetbrains.plugins.textmate</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType
+                name="fu"
+                implementationClass="fu.FuFileType"
+                fieldName="INSTANCE"
+                language="fu"
+                extensions="fu"/>
+
+        <lang.substitutor language="fu" order="first"
+                          implementationClass="fu.lang.FuLanguageSubstitutor"/>
+
+        <lang.syntaxHighlighterFactory language="fu"
+                                       implementationClass="fu.FuSyntaxHighlighterFactory"/>
+
+        <langCodeStyleSettingsProvider
+                implementation="fu.codestyle.FuLanguageCodeStyleSettingsProvider"/>
+
+    </extensions>
+
+    <applicationListeners>
+        <listener
+                topic="com.intellij.ide.AppLifecycleListener"
+                class="fu.textmate.FuTextMateBundleManager"
+                activeInHeadlessMode="true" activeInTestMode="true"
+        />
+        <listener
+                topic="com.intellij.openapi.startup.StartupActivity"
+                class="fu.textmate.FuTextMateBundleManager"
+                activeInHeadlessMode="true" activeInTestMode="true"
+        />
+        <listener
+                topic="com.intellij.ide.plugins.DynamicPluginListener"
+                class="fu.textmate.FuTextMateBundleManager"
+                activeInHeadlessMode="true" activeInTestMode="true"
+        />
+    </applicationListeners>
+</idea-plugin>

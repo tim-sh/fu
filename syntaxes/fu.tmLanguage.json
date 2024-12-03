@@ -1,0 +1,18 @@
+{
+  "comment": "Fu syntax",
+  "fileTypes": [
+    "fu"
+  ],
+  "name": "fu",
+  "patterns": [
+    {
+      "match": "\\bfu\\b",
+      "name": "keyword.control.fu"
+    },
+    {
+      "match": "\\bgu\\b",
+      "name": "keyword.control.gu"
+    }
+  ],
+  "scopeName": "source.fu"
+}

@@ -1,0 +1,67 @@
+import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
+
+plugins {
+    id 'java'
+    id 'org.jetbrains.intellij.platform' version '2.0.1'
+}
+
+repositories {
+    mavenCentral()
+
+    intellijPlatform {
+        defaultRepositories()
+        jetbrainsRuntime()
+    }
+}
+
+dependencies {
+    implementation 'org.jetbrains:annotations:24.1.0'
+    implementation 'org.apache.maven:maven-artifact:3.9.9'
+
+    intellijPlatform {
+        String type = project.findProperty('platformType')
+        String version = project.findProperty('platformVersion')
+        create(type, version)
+
+        bundledPlugins(['com.intellij.java', 'org.jetbrains.plugins.textmate'])
+
+        instrumentationTools()
+    }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(project.findProperty('javaVersion') as String)
+    }
+}
+
+intellijPlatform {
+    buildSearchableOptions = false
+}
+
+intellijPlatformTesting.runIde {
+    runWebStorm {
+        type = IntelliJPlatformType.WebStorm
+        task {
+            dependsOn 'copySyntaxes'
+        }
+    }
+}
+
+tasks {
+    wrapper {
+        gradleVersion = project.findProperty('gradleVersion')
+    }
+
+    patchPluginXml {
+        version = project.findProperty('pluginVersion')
+        sinceBuild = project.findProperty('pluginSinceBuild')
+        untilBuild = project.findProperty('pluginUntilBuild')
+    }
+}
+
+tasks.register('copySyntaxes', Copy) {
+    mustRunAfter 'buildSearchableOptions'
+    from './syntaxes'
+    into "${tasks.named('prepareSandbox_runWebStorm').map { it.pluginDirectory }.get().get()}/lib/syntaxes"
+}
